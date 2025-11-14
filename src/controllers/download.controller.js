@@ -1,22 +1,20 @@
-import { View, Text, Image, Button } from "react-native";
-import { downloadVideo } from "../controllers/download.controller";
+import { API_URL } from "../config/api";
 
-export default function VideoCard({ video }) {
-  return (
-    <View style={{ padding: 10 }}>
-      <Image
-        source={{ uri: video.thumbnail }}
-        style={{ width: "100%", height: 200, borderRadius: 10 }}
-      />
+export const downloadVideo = async (url, format_id) => {
+  try {
+    const response = await fetch(`${API_URL}/api/videos/download`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url, format_id }),
+    });
 
-      <Text numberOfLines={2} style={{ marginTop: 10 }}>
-        {video.title}
-      </Text>
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
 
-      <Button
-        title="Ver formatos"
-        onPress={() => console.log(video.formats)}
-      />
-    </View>
-  );
-}
+    return response; // download stream
+  } catch (error) {
+    console.error("Error al descargar:", error);
+    throw error;
+  }
+};
