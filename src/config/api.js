@@ -1,1 +1,1 @@
-export const API_URL = "http://192.168.18.11:3000"; // tu IP local
+export const API_URL = "https://iutube-backend.onrender.com"; // tu IP local
